@@ -23,6 +23,11 @@ class Loaded extends DebtState {
   List<Object> get props => [];
 }
 
+class Done extends DebtState {
+  @override
+  List<Object> get props => null;
+}
+
 class Error extends DebtState {
   final String message;
 

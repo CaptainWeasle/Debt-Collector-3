@@ -54,12 +54,64 @@ class DebtBloc extends Bloc<DebtEvent, DebtState> {
   ) async* {
     if (event is GetAllDebts) {
       try {
-        print("hello there");
+        print("getting all debts");
         yield Loading();
         final failureOrAllDebts = await getAllDebts(NoParams());
         yield failureOrAllDebts.fold(
           (failure) => Error(message: 'Database Failure'),
           (allDebts) => Loaded(allDebts),
+        );
+      } catch (e) {
+        yield Error(message: 'Error');
+      }
+    }
+    if (event is AddDebt) {
+      try {
+        print("adding debt");
+        yield Loading();
+        final failureOrAdd = await addDebt(ParamsDebt(debt: event.debt));
+        yield failureOrAdd.fold(
+          (failure) => Error(message: 'Database Failure'),
+          (allDebts) => Done(),
+        );
+      } catch (e) {
+        yield Error(message: 'Error');
+      }
+    }
+    if (event is UpdateDebt) {
+      try {
+        print("updating debt");
+        yield Loading();
+        final failureOrUpdate = await updateDebt(ParamsDebt(debt: event.debt));
+        yield failureOrUpdate.fold(
+          (failure) => Error(message: 'Database Failure'),
+          (allDebts) => Done(),
+        );
+      } catch (e) {
+        yield Error(message: 'Error');
+      }
+    }
+    if (event is DeleteDebt) {
+      try {
+        print("deleting debt");
+        yield Loading();
+        final failureOrDelete = await deleteDebt(ParamsDebt(debt: event.debt));
+        yield failureOrDelete.fold(
+          (failure) => Error(message: 'Database Failure'),
+          (allDebts) => Done(),
+        );
+      } catch (e) {
+        yield Error(message: 'Error');
+      }
+    }
+    if (event is DeleteAllDebts) {
+      try {
+        print("deleting all debts");
+        yield Loading();
+        final failureOrDeleteAll = await deleteAllDebts(NoParams());
+        yield failureOrDeleteAll.fold(
+          (failure) => Error(message: 'Database Failure'),
+          (allDebts) => Done(),
         );
       } catch (e) {
         yield Error(message: 'Error');

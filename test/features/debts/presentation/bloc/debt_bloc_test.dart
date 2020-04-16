@@ -112,25 +112,69 @@ void main() {
       bloc.close();
     });
 
-    test('should emit [Loading, Loaded] when data is gotten successfully',
+    test('should emit [Loading, Done] when data is added successfully',
         () async {
       // arrange
-      when(mockGetAllDebts(any)).thenAnswer((_) async => Right(tDebts.tDL));
+      when(mockAddDebt(any)).thenAnswer((_) async => Right(Void));
       // assert later
       final expected = [
         bloc.initialState,
         Loading(),
-        Loaded(tDebts.tDL),
+        Done(),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
-      bloc.add(GetAllDebts());
+      bloc.add(AddDebt(tDebts.tD));
       bloc.close();
     });
 
     test('should emit [Loading, Error] when getting data fails', () async {
       // arrange
-      when(mockGetAllDebts(any))
+      when(mockAddDebt(any)).thenAnswer((_) async => Left(DatabaseFailure()));
+      // assert later
+      final expected = [
+        bloc.initialState,
+        Loading(),
+        Error(message: 'Database Failure'),
+      ];
+      expectLater(bloc, emitsInOrder(expected));
+      // act
+      bloc.add(AddDebt(tDebts.tD));
+      bloc.close();
+    });
+  });
+
+  group('UpdateDebt', () {
+    test('should update data from the concrete usecase', () async {
+      // arrange
+      when(mockUpdateDebt(any)).thenAnswer((_) async => Right(Void));
+      // act
+      bloc.add(UpdateDebt(tDebts.tD));
+      await untilCalled(mockUpdateDebt(ParamsDebt(debt: tDebts.tD)));
+      // assert
+      verify(mockUpdateDebt(ParamsDebt(debt: tDebts.tD)));
+      bloc.close();
+    });
+
+    test('should emit [Loading, Done] when data is updated successfully',
+        () async {
+      // arrange
+      when(mockUpdateDebt(any)).thenAnswer((_) async => Right(Void));
+      // assert later
+      final expected = [
+        bloc.initialState,
+        Loading(),
+        Done(),
+      ];
+      expectLater(bloc, emitsInOrder(expected));
+      // act
+      bloc.add(UpdateDebt(tDebts.tD));
+      bloc.close();
+    });
+
+    test('should emit [Loading, Error] when updating data fails', () async {
+      // arrange
+      when(mockUpdateDebt(any))
           .thenAnswer((_) async => Left(DatabaseFailure()));
       // assert later
       final expected = [
@@ -140,7 +184,97 @@ void main() {
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
-      bloc.add(GetAllDebts());
+      bloc.add(UpdateDebt(tDebts.tD));
+      bloc.close();
+    });
+  });
+
+  group('DeleteDebt', () {
+    test('should delete data from the concrete usecase', () async {
+      // arrange
+      when(mockDeleteDebt(any)).thenAnswer((_) async => Right(Void));
+      // act
+      bloc.add(DeleteDebt(tDebts.tD));
+      await untilCalled(mockDeleteDebt(ParamsDebt(debt: tDebts.tD)));
+      // assert
+      verify(mockDeleteDebt(ParamsDebt(debt: tDebts.tD)));
+      bloc.close();
+    });
+
+    test('should emit [Loading, Done] when data is deleted successfully',
+        () async {
+      // arrange
+      when(mockDeleteDebt(any)).thenAnswer((_) async => Right(Void));
+      // assert later
+      final expected = [
+        bloc.initialState,
+        Loading(),
+        Done(),
+      ];
+      expectLater(bloc, emitsInOrder(expected));
+      // act
+      bloc.add(DeleteDebt(tDebts.tD));
+      bloc.close();
+    });
+
+    test('should emit [Loading, Error] when deleting data fails', () async {
+      // arrange
+      when(mockDeleteDebt(any))
+          .thenAnswer((_) async => Left(DatabaseFailure()));
+      // assert later
+      final expected = [
+        bloc.initialState,
+        Loading(),
+        Error(message: 'Database Failure'),
+      ];
+      expectLater(bloc, emitsInOrder(expected));
+      // act
+      bloc.add(DeleteDebt(tDebts.tD));
+      bloc.close();
+    });
+  });
+
+  group('DeleteAllDebts', () {
+    test('should delete all data from the concrete usecase', () async {
+      // arrange
+      when(mockDeleteAllDebts(any)).thenAnswer((_) async => Right(Void));
+      // act
+      bloc.add(DeleteAllDebts());
+      await untilCalled(mockDeleteAllDebts(any));
+      // assert
+      verify(mockDeleteAllDebts(NoParams()));
+      bloc.close();
+    });
+
+    test('should emit [Loading, Done] when all data is deleted successfully',
+        () async {
+      // arrange
+      when(mockDeleteAllDebts(any)).thenAnswer((_) async => Right(Void));
+      // assert later
+      final expected = [
+        bloc.initialState,
+        Loading(),
+        Done(),
+      ];
+      expectLater(bloc, emitsInOrder(expected));
+      // act
+      bloc.add(DeleteAllDebts());
+      bloc.close();
+    });
+
+    test('should emit [Loading, Error] when deleting all data fails', () async {
+      // arrange
+      when(mockDeleteAllDebts(any))
+          .thenAnswer((_) async => Left(DatabaseFailure()));
+      // assert later
+      final expected = [
+        bloc.initialState,
+        Loading(),
+        Error(message: 'Database Failure'),
+      ];
+      expectLater(bloc, emitsInOrder(expected));
+      // act
+      bloc.add(DeleteAllDebts());
       bloc.close();
     });
   });
