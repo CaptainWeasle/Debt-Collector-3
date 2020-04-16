@@ -1,0 +1,11 @@
+{
+    "id": 23,
+    "name": "Moon Landing",
+    "debt": 12.0,
+    "debtStartDate": "1969-07-20 20:18:04Z",
+    "debtDueDate": "1969-07-21 20:18:04Z",
+    "priority": 2,
+    "iOwe": 1,
+    "completed": 0,
+    "descr": "DateTime of the moon landing"
+}
