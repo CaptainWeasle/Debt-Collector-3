@@ -2,8 +2,26 @@ import 'package:debt_collector_3/database/moor_database/moor_database.dart'
     as prefix0;
 import 'package:debt_collector_3/database/moor_database/moor_database.dart';
 import 'package:debt_collector_3/features/debts/data/models/debt_model.dart';
+import 'package:debt_collector_3/features/debts/domain/entities/debt.dart'
+    as prefix1;
 
-DebtModel toDebtModel(prefix0.Debt databaseDebt) {
+DebtModel toDebtModel(prefix1.Debt debt) {
+  DebtModel debtModel = DebtModel(
+    id: debt.id,
+    name: debt.name,
+    debt: debt.debt,
+    description: debt.description,
+    debtStartDate: debt.debtStartDate,
+    debtDueDate: debt.debtDueDate,
+    priority: debt.priority,
+    iOwe: debt.iOwe,
+    completed: debt.completed,
+  );
+
+  return debtModel;
+}
+
+DebtModel toDebtDModel(prefix0.Debt databaseDebt) {
   DebtModel debtModel = DebtModel(
     id: databaseDebt.id,
     name: databaseDebt.name,
@@ -23,7 +41,7 @@ List<DebtModel> toDebtModelList(List<prefix0.Debt> databaseList) {
   List<DebtModel> debtModelList = [];
 
   for (int i = 0; i < databaseList.length; i++) {
-    debtModelList.add(toDebtModel(databaseList[i]));
+    debtModelList.add(toDebtDModel(databaseList[i]));
   }
 
   return debtModelList;

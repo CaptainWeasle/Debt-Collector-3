@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:dartz/dartz.dart';
+import 'package:debt_collector_3/core/conversions/database_debtmodel_converter.dart';
 import 'package:debt_collector_3/features/debts/data/datasources/debt_database_datasource.dart';
 import 'package:meta/meta.dart';
 
@@ -31,7 +32,7 @@ class DebtRepositoryImpl implements DebtRepository {
   @override
   Future<Either<Failure, void>> addDebt(Debt debt) async {
     try {
-      databaseDatasource.addDebt(debt);
+      databaseDatasource.addDebt(toDebtModel(debt));
       return Right(Void);
     } on DatabaseException {
       return Left(DatabaseFailure());

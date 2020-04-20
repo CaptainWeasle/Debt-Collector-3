@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:debt_collector_3/features/debts/domain/usecases/add_debt.dart'
     as prefix4;
 import 'package:debt_collector_3/features/debts/domain/usecases/delete_all_debts.dart'
@@ -66,17 +67,13 @@ class DebtBloc extends Bloc<DebtEvent, DebtState> {
       }
     }
     if (event is AddDebt) {
-      try {
-        print("adding debt");
-        yield Loading();
-        final failureOrAdd = await addDebt(ParamsDebt(debt: event.debt));
-        yield failureOrAdd.fold(
-          (failure) => Error(message: 'Database Failure'),
-          (allDebts) => Done(),
-        );
-      } catch (e) {
-        yield Error(message: 'Error');
-      }
+      print("adding debt");
+      yield Loading();
+      final failureOrAdd = await addDebt(ParamsDebt(debt: event.debt));
+      yield failureOrAdd.fold(
+        (failure) => Error(message: 'Database Failure'),
+        (allDebts) => Done(),
+      );
     }
     if (event is UpdateDebt) {
       try {
@@ -88,9 +85,10 @@ class DebtBloc extends Bloc<DebtEvent, DebtState> {
           (allDebts) => Done(),
         );
       } catch (e) {
-        yield Error(message: 'Error');
+        yield Error(message: 'UpdateBloc Error');
       }
     }
+    // ! Hier muss noch das Empty State returned werden
     if (event is DeleteDebt) {
       try {
         print("deleting debt");
@@ -100,8 +98,13 @@ class DebtBloc extends Bloc<DebtEvent, DebtState> {
           (failure) => Error(message: 'Database Failure'),
           (allDebts) => Done(),
         );
+        final failureOrAllDebts = await getAllDebts(NoParams());
+        if (failureOrAllDebts.isRight()) {
+          final List<Debt> tempList = failureOrAllDebts.getOrElse(null);
+          if (tempList.isEmpty) yield Empty();
+        }
       } catch (e) {
-        yield Error(message: 'Error');
+        yield Error(message: 'DeleteDebtBlocError');
       }
     }
     if (event is DeleteAllDebts) {
@@ -110,11 +113,11 @@ class DebtBloc extends Bloc<DebtEvent, DebtState> {
         yield Loading();
         final failureOrDeleteAll = await deleteAllDebts(NoParams());
         yield failureOrDeleteAll.fold(
-          (failure) => Error(message: 'Database Failure'),
-          (allDebts) => Done(),
-        );
+            (failure) => Error(message: 'Database Failure'),
+            (allDebts) => Done());
+        yield Empty();
       } catch (e) {
-        yield Error(message: 'Error');
+        yield Error(message: 'DeleteDebts Bloc Failure');
       }
     }
   }
