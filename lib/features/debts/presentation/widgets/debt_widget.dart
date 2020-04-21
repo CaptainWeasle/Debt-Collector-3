@@ -8,11 +8,10 @@ class DebtWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Text(debt.name),
-        Text(debt.debt.toString()),
-      ],
+    return ListTile(
+      leading: Icon(Icons.euro_symbol),
+      title: Text(debt.debt.toString()),
+      subtitle: Text(debt.name),
     );
   }
 }
