@@ -9,11 +9,12 @@ class Empty extends DebtState {
   List<Object> get props => [];
 }
 
+/*
 class Loading extends DebtState {
   @override
   List<Object> get props => [];
 }
-
+*/
 class Loaded extends DebtState {
   final List<Debt> list;
 
@@ -24,6 +25,9 @@ class Loaded extends DebtState {
 }
 
 class Done extends DebtState {
+  final List<Debt> list;
+
+  Done(this.list);
   @override
   List<Object> get props => null;
 }

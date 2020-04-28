@@ -45,6 +45,14 @@ class DebtBloc extends Bloc<DebtEvent, DebtState> {
         deleteDebt = delete,
         deleteAllDebts = deleteA;
 
+  getDebts() async* {
+    final failureOrAllDebts = await getAllDebts(NoParams());
+    yield failureOrAllDebts.fold(
+      (failure) => Error(message: 'Database Failure'),
+      (allDebts) => Loaded(allDebts),
+    );
+  }
+
   @override
   DebtState get initialState => Empty();
 
@@ -55,68 +63,80 @@ class DebtBloc extends Bloc<DebtEvent, DebtState> {
     if (event is GetAllDebts) {
       try {
         print("getting all debts");
-        yield Loading();
+        //yield Loading();
         final failureOrAllDebts = await getAllDebts(NoParams());
         yield failureOrAllDebts.fold(
           (failure) => Error(message: 'Database Failure'),
           (allDebts) => Loaded(allDebts),
         );
       } catch (e) {
-        yield Error(message: 'Error');
+        //yield Error(message: 'Error');
       }
     }
     if (event is AddDebt) {
       print("adding debt");
-      yield Loading();
-      final failureOrAdd = await addDebt(ParamsDebt(debt: event.debt));
-      yield failureOrAdd.fold(
+      //yield Loading();
+      await addDebt(ParamsDebt(debt: event.debt));
+      final failureOrAllDebts = await getAllDebts(NoParams());
+      yield failureOrAllDebts.fold(
         (failure) => Error(message: 'Database Failure'),
-        (allDebts) => Done(),
+        (allDebts) => Done(allDebts),
+      );
+      yield failureOrAllDebts.fold(
+        (failure) => Error(message: 'Database Failure'),
+        (allDebts) => Loaded(allDebts),
       );
     }
     if (event is UpdateDebt) {
       try {
         print("updating debt");
-        yield Loading();
-        final failureOrUpdate = await updateDebt(ParamsDebt(debt: event.debt));
-        yield failureOrUpdate.fold(
+        //yield Loading();
+        await updateDebt(ParamsDebt(debt: event.debt));
+        final failureOrAllDebts = await getAllDebts(NoParams());
+        yield failureOrAllDebts.fold(
           (failure) => Error(message: 'Database Failure'),
-          (allDebts) => Done(),
+          (allDebts) => Loaded(allDebts),
         );
       } catch (e) {
-        yield Error(message: 'UpdateBloc Error');
+        //yield Error(message: 'UpdateBloc Error');
       }
     }
-    // ! Hier muss noch das Empty State returned werden
     if (event is DeleteDebt) {
       try {
         print("deleting debt");
-        yield Loading();
-        final failureOrDelete = await deleteDebt(ParamsDebt(debt: event.debt));
-        yield failureOrDelete.fold(
-          (failure) => Error(message: 'Database Failure'),
-          (allDebts) => Done(),
-        );
+        //yield Loading();
+        await deleteDebt(ParamsDebt(debt: event.debt));
         final failureOrAllDebts = await getAllDebts(NoParams());
+        yield failureOrAllDebts.fold(
+          (failure) => Error(message: 'Database Failure'),
+          (allDebts) => Done(allDebts),
+        );
+        yield failureOrAllDebts.fold(
+          (failure) => Error(message: 'Database Failure'),
+          (allDebts) => Loaded(allDebts),
+        );
+
         if (failureOrAllDebts.isRight()) {
           final List<Debt> tempList = failureOrAllDebts.getOrElse(null);
           if (tempList.isEmpty) yield Empty();
         }
       } catch (e) {
-        yield Error(message: 'DeleteDebtBlocError');
+        //yield Error(message: 'DeleteDebtBlocError');
       }
     }
     if (event is DeleteAllDebts) {
       try {
         print("deleting all debts");
-        yield Loading();
-        final failureOrDeleteAll = await deleteAllDebts(NoParams());
-        yield failureOrDeleteAll.fold(
-            (failure) => Error(message: 'Database Failure'),
-            (allDebts) => Done());
+        //yield Loading();
+        await deleteAllDebts(NoParams());
+        final failureOrAllDebts = await getAllDebts(NoParams());
+        yield failureOrAllDebts.fold(
+          (failure) => Error(message: 'Database Failure'),
+          (allDebts) => Loaded(allDebts),
+        );
         yield Empty();
       } catch (e) {
-        yield Error(message: 'DeleteDebts Bloc Failure');
+        //yield Error(message: 'DeleteDebts Bloc Failure');
       }
     }
   }
