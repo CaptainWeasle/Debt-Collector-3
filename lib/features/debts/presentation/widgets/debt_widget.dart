@@ -13,7 +13,7 @@ class DebtWidget extends StatelessWidget {
     return BlocBuilder<DebtBloc, DebtState>(
       builder: (context, state) {
         return Dismissible(
-          key: ObjectKey(context),
+          key: UniqueKey(),
           onDismissed: (direction) {
             BlocProvider.of<DebtBloc>(context).add(DeleteDebt(debt));
           },

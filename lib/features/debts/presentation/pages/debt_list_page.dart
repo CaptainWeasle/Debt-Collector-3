@@ -41,34 +41,17 @@ class DebtListPage extends StatelessWidget {
         ),
         BlocBuilder<DebtBloc, DebtState>(
           builder: (context, state) {
-            if (state is Empty)
-              //print("empty");
-            BlocProvider.of<DebtBloc>(context).add(GetAllDebts());
-            else if (state is Error)
-              return MessageDisplay(message: state.message);
-            else if (state is Loaded) {
+            
               return Expanded(
                 child: ListView.builder(
                   //key: UniqueKey(),
-                  itemCount: state.list.length,
+                  itemCount: state.debtList.length,
                   itemBuilder: (context, i) {
-                    return DebtWidget(debt: state.list[i]);
+                    return DebtWidget(debt: state.debtList[i]);
                   },
                 ),
               );
-            } else if (state is Done) {
-              return Expanded(
-                child: ListView.builder(
-                  //key: UniqueKey(),
-                  itemCount: state.list.length,
-                  itemBuilder: (context, i) {
-                    return DebtWidget(debt: state.list[i]);
-                  },
-                ),
-              );
-            }
-            return MessageDisplay(message: "lol?");
-          },
+            } 
         ),
       ],
     );

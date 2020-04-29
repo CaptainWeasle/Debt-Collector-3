@@ -1,10 +1,12 @@
+/*
+
+
 import 'dart:ffi';
 
 import 'package:dartz/dartz.dart';
 import 'package:debt_collector_3/core/error/failures.dart';
 import 'package:debt_collector_3/core/globals/test_debts.dart' as tDebts;
 import 'package:debt_collector_3/core/usecases/params.dart';
-import 'package:debt_collector_3/features/debts/domain/entities/debt.dart';
 import 'package:debt_collector_3/features/debts/domain/usecases/add_debt.dart'
     as prefix4;
 import 'package:debt_collector_3/features/debts/domain/usecases/delete_all_debts.dart'
@@ -52,6 +54,10 @@ void main() {
     );
   });
 
+  test('initial state should be empty', () {
+    expect(bloc.initialState, equals(Empty()));
+  });
+
   group('GetAllDebts', () {
     test('should get data from the concrete usecase', () async {
       // arrange
@@ -71,7 +77,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(debtList: tDebts.tDL),
+        Loading(),
+        Loaded(tDebts.tDL),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -86,8 +93,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        bloc.initialState,
-        DebtState(),
+        Loading(),
+        Error(message: 'Database Failure'),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -115,7 +122,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(debtList: tDebts.tDL),
+        Loading(),
+        Done(),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -129,7 +137,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(),
+        Loading(),
+        Error(message: 'Database Failure'),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -157,7 +166,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(debtList: tDebts.tDL),
+        Loading(),
+        Done(),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -172,7 +182,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(),
+        Loading(),
+        Error(message: 'Database Failure'),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -200,7 +211,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(debtList: tDebts.tDL),
+        Loading(),
+        Done(),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -215,7 +227,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(),
+        Loading(),
+        Error(message: 'Database Failure'),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -243,7 +256,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(debtList: tDebts.tDL),
+        Loading(),
+        Done(),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -258,7 +272,8 @@ void main() {
       // assert later
       final expected = [
         bloc.initialState,
-        DebtState(),
+        Loading(),
+        Error(message: 'Database Failure'),
       ];
       expectLater(bloc, emitsInOrder(expected));
       // act
@@ -267,3 +282,5 @@ void main() {
     });
   });
 }
+
+*/
