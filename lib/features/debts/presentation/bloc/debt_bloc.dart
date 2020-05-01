@@ -11,7 +11,7 @@ import 'package:debt_collector_3/features/debts/domain/usecases/get_all_debts.da
     as prefix2;
 import 'package:debt_collector_3/features/debts/domain/usecases/update_debt.dart'
     as prefix1;
-import 'package:equatable/equatable.dart';
+import 'package:debt_collector_3/features/debts/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -54,90 +54,60 @@ class DebtBloc extends Bloc<DebtEvent, DebtState> {
   }
 
   @override
-  DebtState get initialState => DebtState.initial();
+  DebtState get initialState {
+    try {
+      return DebtState(debtList: state.debtList);
+    } catch (e) {
+      return DebtState.initial();
+    }
+  }
 
   @override
   Stream<DebtState> mapEventToState(
     DebtEvent event,
   ) async* {
     if (event is GetAllDebts) {
-      try {
-        print("getting all debts");
-        //yield Loading();
-        final failureOrAllDebts = await getAllDebts(NoParams());
-        yield failureOrAllDebts.fold(
-      (failure) => DebtState(),
-      (allDebts) => DebtState(debtList: allDebts),
-        );
-      } catch (e) {
-        //yield Error(message: 'Error');
-      }
+      final failureOrAllDebts = await getAllDebts(NoParams());
+      yield failureOrAllDebts.fold(
+        (failure) => DebtState(),
+        (allDebts) => DebtState(debtList: allDebts, state: Loaded()),
+      );
     }
+
     if (event is AddDebt) {
-      print("adding debt");
-      //yield Loading();
       await addDebt(ParamsDebt(debt: event.debt));
       final failureOrAllDebts = await getAllDebts(NoParams());
       yield failureOrAllDebts.fold(
-      (failure) => DebtState(),
-      (allDebts) => DebtState(debtList: allDebts),
-      );
-      yield failureOrAllDebts.fold(
-      (failure) => DebtState(),
-      (allDebts) => DebtState(debtList: allDebts),
+        (failure) => DebtState(),
+        (allDebts) => DebtState(debtList: allDebts, state: Loaded()),
       );
     }
-    if (event is UpdateDebt) {
-      try {
-        print("updating debt");
-        //yield Loading();
-        await updateDebt(ParamsDebt(debt: event.debt));
-        final failureOrAllDebts = await getAllDebts(NoParams());
-        yield failureOrAllDebts.fold(
-      (failure) => DebtState(),
-      (allDebts) => DebtState(debtList: allDebts),
-        );
-      } catch (e) {
-        //yield Error(message: 'UpdateBloc Error');
-      }
-    }
-    if (event is DeleteDebt) {
-      try {
-        print("deleting debt");
-        //yield Loading();
-        await deleteDebt(ParamsDebt(debt: event.debt));
-        final failureOrAllDebts = await getAllDebts(NoParams());
-        yield failureOrAllDebts.fold(
-      (failure) => DebtState(),
-      (allDebts) => DebtState(debtList: allDebts),
-        );
-        yield failureOrAllDebts.fold(
-      (failure) => DebtState(),
-      (allDebts) => DebtState(debtList: allDebts),
-        );
 
-        if (failureOrAllDebts.isRight()) {
-          final List<Debt> tempList = failureOrAllDebts.getOrElse(null);
-          if (tempList.isEmpty) yield DebtState.initial();
-        }
-      } catch (e) {
-        //yield Error(message: 'DeleteDebtBlocError');
+    if (event is UpdateDebt) {
+      await updateDebt(ParamsDebt(debt: event.debt));
+      final failureOrAllDebts = await getAllDebts(NoParams());
+      yield failureOrAllDebts.fold(
+        (failure) => DebtState(),
+        (allDebts) => DebtState(debtList: allDebts, state: Loaded()),
+      );
+    }
+
+    if (event is DeleteDebt) {
+      await deleteDebt(ParamsDebt(debt: event.debt));
+      final failureOrAllDebts = await getAllDebts(NoParams());
+      yield failureOrAllDebts.fold(
+        (failure) => DebtState(),
+        (allDebts) => DebtState(debtList: allDebts, state: Loaded()),
+      );
+      if (failureOrAllDebts.isRight()) {
+        final List<Debt> tempList = failureOrAllDebts.getOrElse(null);
+        if (tempList.isEmpty) yield DebtState.initial();
       }
     }
+
     if (event is DeleteAllDebts) {
-      try {
-        print("deleting all debts");
-        //yield Loading();
-        await deleteAllDebts(NoParams());
-        final failureOrAllDebts = await getAllDebts(NoParams());
-        yield failureOrAllDebts.fold(
-      (failure) => DebtState(),
-      (allDebts) => DebtState(debtList: allDebts),
-        );
-        yield DebtState.initial();
-      } catch (e) {
-        //yield Error(message: 'DeleteDebts Bloc Failure');
-      }
+      await deleteAllDebts(NoParams());
+      yield DebtState.initial();
     }
   }
 }
