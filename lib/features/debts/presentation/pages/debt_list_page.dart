@@ -32,6 +32,7 @@ class DebtListPage extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
+    BlocProvider.of<DebtBloc>(context).add(GetAllDebts());
     return Column(
       children: <Widget>[
         RaisedButton(
@@ -41,17 +42,18 @@ class DebtListPage extends StatelessWidget {
         ),
         BlocBuilder<DebtBloc, DebtState>(
           builder: (context, state) {
-            
+            if (state.state is Loaded) {
               return Expanded(
                 child: ListView.builder(
-                  //key: UniqueKey(),
                   itemCount: state.debtList.length,
                   itemBuilder: (context, i) {
                     return DebtWidget(debt: state.debtList[i]);
                   },
                 ),
               );
-            } 
+            }
+            return Text("No Debts");
+          },
         ),
       ],
     );

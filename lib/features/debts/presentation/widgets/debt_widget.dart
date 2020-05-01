@@ -9,11 +9,24 @@ class DebtWidget extends StatelessWidget {
   const DebtWidget({Key key, @required this.debt}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return BlocBuilder<DebtBloc, DebtState>(
       builder: (context, state) {
         return Dismissible(
-          key: UniqueKey(),
+          background: Container(
+            child: Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "Löschen",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            color: Colors.redAccent,
+          ),
+          key: ObjectKey(debt),
           onDismissed: (direction) {
             BlocProvider.of<DebtBloc>(context).add(DeleteDebt(debt));
           },
