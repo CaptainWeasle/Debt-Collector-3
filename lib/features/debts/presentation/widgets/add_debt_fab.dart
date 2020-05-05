@@ -1,5 +1,6 @@
 import 'package:debt_collector_3/features/debts/domain/entities/debt.dart';
 import 'package:debt_collector_3/features/debts/presentation/bloc/debt_bloc.dart';
+import 'package:debt_collector_3/features/debts/presentation/pages/add_debt_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +16,8 @@ class AddDebtFAB extends StatelessWidget {
           key: ObjectKey(context),
           child: Icon(Icons.add),
           onPressed: () {
+           addDebtBottomSheet(context);
             BlocProvider.of<DebtBloc>(context).add(AddDebt(debt));
-            //BlocProvider.of<DebtBloc>(context).add(GetAllDebts());
           },
         );
       },

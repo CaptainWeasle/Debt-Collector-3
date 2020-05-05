@@ -1,9 +1,9 @@
-import 'package:debt_collector_3/features/debts/domain/entities/debt.dart';
-import 'package:debt_collector_3/features/debts/presentation/widgets/debt_widget/debt_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/entities/debt.dart';
 import '../bloc/debt_bloc.dart';
+import '../widgets/debt_widget/debt_widget.dart';
 import '../widgets/widgets.dart';
 
 class DebtListPage extends StatelessWidget {
