@@ -16,8 +16,7 @@ class AddDebtFAB extends StatelessWidget {
           key: ObjectKey(context),
           child: Icon(Icons.add),
           onPressed: () {
-           addDebtBottomSheet(context);
-            BlocProvider.of<DebtBloc>(context).add(AddDebt(debt));
+            addDebtBottomSheet(context, debt);
           },
         );
       },
