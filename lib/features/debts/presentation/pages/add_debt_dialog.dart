@@ -1,57 +1,13 @@
 import 'package:flutter/material.dart';
 
-void addDebtBottomSheet(context) {
-  showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bc) {
-        return Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              addDebtDialogTitle(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-              ),
-              MaterialButton(
-                color: Colors.blue,
-                onPressed: () {},
-              ),
-              Spacer(),
-            ],
-          ),
-        );
-      });
-}
+import '../../domain/entities/debt.dart';
+import '../widgets/addDebtDialog/modal_bottom_sheet.dart';
 
-Widget addDebtDialogTitle() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: ListTile(
-      leading: FittedBox(
-        fit: BoxFit.contain,
-        child: Text(
-          "Create a new debt",
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    ),
+void addDebtBottomSheet(context, Debt debt) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext bc) {
+      return ModalBottomSheet(debt);
+    },
   );
 }
