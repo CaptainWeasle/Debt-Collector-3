@@ -24,6 +24,8 @@ dependencies:
   shared_preferences: ^0.5.3+4
   # Database
   moor_flutter: ^1.4.0
+  # DateTimeField Form Widget
+  datetime_picker_formfield: ^1.0.0
 
 dev_dependencies:
   flutter_test:
