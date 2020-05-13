@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 import '../../../domain/entities/debt.dart';
 import '../../bloc/debt_bloc.dart';
-import 'add_debt_dialog_title.dart';
 
 class ModalBottomSheet extends StatefulWidget {
   final Debt debt;
@@ -20,18 +19,52 @@ class ModalBottomSheetState extends State<ModalBottomSheet> {
   TextEditingController debtController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
+  bool iOwe = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        AddDebtDialogTitle(),
+        titleTile(),
+        oweChecker(),
         textFieldName(),
         textFieldDebt(),
         datePicker(),
         addDebtButton(context),
         Spacer(),
+      ],
+    );
+  }
+
+  Widget titleTile() {
+    return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListTile(
+            leading: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  "Create a new debt",
+                  style: TextStyle(fontSize: 20),
+                ))));
+  }
+
+  Widget oweChecker() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          "Do you owe someone?",
+          style: TextStyle(fontSize: 16),
+        ),
+        Checkbox(
+            value: iOwe,
+            onChanged: (bool c) {
+              setState(() {
+                iOwe = c;
+              });
+            }),
       ],
     );
   }
@@ -67,35 +100,6 @@ class ModalBottomSheetState extends State<ModalBottomSheet> {
     );
   }
 
-  Widget addDebtButton(BuildContext context) {
-    return BlocBuilder<DebtBloc, DebtState>(builder: (context, state) {
-      return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-              width: double.infinity,
-              //height: ,
-              child: MaterialButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text("ADD DEBT", style: TextStyle(fontSize: 16)),
-                  ),
-                  //color: Colors.blue,
-                  onPressed: () {
-                    BlocProvider.of<DebtBloc>(context).add(AddDebt(Debt(
-                      name: nameController.text,
-                      debt: double.parse(debtController.text),
-                      description: "",
-                      debtStartDate: DateTime.now(),
-                      debtDueDate: DateTime.parse(dateController.text),
-                      priority: 1,
-                      iOwe: false,
-                      completed: false,
-                    )));
-                    Navigator.pop(context);
-                  })));
-    });
-  }
-
   Widget datePicker() {
     return Padding(
         padding: const EdgeInsets.all(8.0),
@@ -115,5 +119,38 @@ class ModalBottomSheetState extends State<ModalBottomSheet> {
                   initialDate: currentValue ?? DateTime.now(),
                   lastDate: DateTime(2100));
             }));
+  }
+
+  Widget addDebtButton(BuildContext context) {
+    return BlocBuilder<DebtBloc, DebtState>(builder: (context, state) {
+      return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+              width: double.infinity,
+              //height: ,
+              child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0),
+                      side: BorderSide(color: Colors.blue)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Text("ADD DEBT", style: TextStyle(fontSize: 16)),
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<DebtBloc>(context).add(AddDebt(Debt(
+                      name: nameController.text,
+                      debt: double.parse(debtController.text),
+                      description: "",
+                      debtStartDate: DateTime.now(),
+                      debtDueDate: dateController.text == ""
+                          ? null
+                          : DateTime.parse(dateController.text),
+                      priority: 1,
+                      iOwe: iOwe,
+                      completed: false,
+                    )));
+                    Navigator.pop(context);
+                  })));
+    });
   }
 }
