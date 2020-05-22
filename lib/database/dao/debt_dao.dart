@@ -20,4 +20,5 @@ class DebtDao extends DatabaseAccessor<AppDatabase> with _$DebtDaoMixin {
   Future updateDebt(Debt debt) => update(debts).replace(debt);
   Future deleteDebt(Debt debt) => delete(debts).delete(debt);
   Future deleteAllDebts() => delete(debts).go();
+  deleteCompletedDebts()  => delete(debts)..where((debt) => debt.completed);
 }
