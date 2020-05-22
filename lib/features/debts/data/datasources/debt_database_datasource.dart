@@ -16,6 +16,8 @@ abstract class DebtDatabaseDataSource {
   Future<void> deleteDebt(DebtModel debt);
 
   Future<void> deleteAllDebts();
+
+  void deleteCompletedDebts() {}
 }
 
 class DebtDatabaseDataSourceImpl implements DebtDatabaseDataSource {
@@ -50,6 +52,12 @@ class DebtDatabaseDataSourceImpl implements DebtDatabaseDataSource {
   @override
   Future<void> deleteAllDebts() {
     dao.deleteAllDebts();
+    return null;
+  }
+
+  @override
+  Future<void> deleteCompletedDebts() {
+    dao.deleteCompletedDebts();
     return null;
   }
 

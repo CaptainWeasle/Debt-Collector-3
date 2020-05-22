@@ -12,7 +12,6 @@ import '../../domain/repositories/debt_repository.dart';
 
 class DebtRepositoryImpl implements DebtRepository {
   final DebtDatabaseDataSource databaseDatasource;
-  // final NetworkInfo networkInfo;
 
   DebtRepositoryImpl({
     @required this.databaseDatasource,
@@ -59,19 +58,28 @@ class DebtRepositoryImpl implements DebtRepository {
     }
   }
 
-  // Irrelevant
-  @override
-  Future<Either<Failure, Debt>> getDebt(int id) {
-    return null;
-  }
-
   @override
   Future<Either<Failure, void>> updateDebt(Debt debt) async {
     try {
-      databaseDatasource.updateDebt(debt);
+      databaseDatasource.updateDebt(toDebtModel(debt));
       return Right(Void);
     } on DatabaseException {
       return Left(DatabaseFailure());
     }
+  }
+
+  @override
+  Future<void> deleteCompletedDebts() async {
+    try {
+      databaseDatasource.deleteCompletedDebts();
+    } on DatabaseException {
+      return DatabaseFailure();
+    }
+  }
+
+  // Irrelevant
+  @override
+  Future<Either<Failure, Debt>> getDebt(int id) {
+    return null;
   }
 }

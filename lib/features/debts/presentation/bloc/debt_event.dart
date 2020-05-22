@@ -25,3 +25,5 @@ class DeleteDebt extends DebtEvent {
 }
 
 class DeleteAllDebts extends DebtEvent {}
+
+class DeleteCompletedDebts extends DebtEvent {}

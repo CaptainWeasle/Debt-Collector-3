@@ -10,4 +10,5 @@ abstract class DebtRepository {
   Future<Either<Failure, void>> updateDebt(Debt debt);
   Future<Either<Failure, void>> deleteDebt(Debt debt);
   Future<Either<Failure, void>> deleteAllDebts();
+  Future<void> deleteCompletedDebts();
 }
