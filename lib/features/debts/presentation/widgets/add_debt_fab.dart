@@ -1,12 +1,11 @@
-import 'package:debt_collector_3/features/debts/domain/entities/debt.dart';
-import 'package:debt_collector_3/features/debts/presentation/bloc/debt_bloc.dart';
-import 'package:debt_collector_3/features/debts/presentation/pages/add_debt_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/debt_bloc.dart';
+import 'addDebtDialog/add_debt_dialog.dart';
+
 class AddDebtFAB extends StatelessWidget {
-  final Debt debt;
-  const AddDebtFAB({Key key, @required this.debt}) : super(key: key);
+  const AddDebtFAB({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class AddDebtFAB extends StatelessWidget {
           key: ObjectKey(context),
           child: Icon(Icons.add),
           onPressed: () {
-            addDebtBottomSheet(context, debt);
+            addDebtBottomSheet(context);
           },
         );
       },
