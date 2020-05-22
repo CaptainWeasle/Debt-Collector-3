@@ -4,6 +4,8 @@ import 'package:debt_collector_3/features/debts/data/datasources/debt_database_d
 import 'package:debt_collector_3/features/debts/data/repositories/debt_repository_impl.dart';
 import 'package:debt_collector_3/features/debts/domain/repositories/debt_repository.dart';
 import 'package:debt_collector_3/features/debts/presentation/bloc/debt_bloc.dart';
+import 'package:debt_collector_3/features/debts/domain/usecases/delete_completed_debts.dart'
+    as prefix5;
 import 'package:debt_collector_3/features/debts/domain/usecases/add_debt.dart'
     as prefix4;
 import 'package:debt_collector_3/features/debts/domain/usecases/delete_all_debts.dart'
@@ -28,6 +30,7 @@ void init() {
         update: sl(),
         delete: sl(),
         deleteA: sl(),
+        deleteC: sl(),
       ));
 
   // Usecases
@@ -36,6 +39,7 @@ void init() {
   sl.registerLazySingleton(() => prefix1.UpdateDebt(sl()));
   sl.registerLazySingleton(() => prefix0.DeleteDebt(sl()));
   sl.registerLazySingleton(() => prefix3.DeleteAllDebts(sl()));
+  sl.registerLazySingleton(() => prefix5.DeleteCompletedDebts(sl()));
 
   // Repository
   sl.registerLazySingleton<DebtRepository>(() => DebtRepositoryImpl(
