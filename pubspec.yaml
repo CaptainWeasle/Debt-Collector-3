@@ -23,7 +23,10 @@ dependencies:
   # Local cache
   shared_preferences: ^0.5.3+4
   # Database
-  moor_flutter: ^1.4.0
+  moor: ^3.1.0
+  moor_ffi: ^0.6.0
+  path_provider: 
+  path:
   # DateTimeField Form Widget
   datetime_picker_formfield: ^1.0.0
 
@@ -31,7 +34,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^4.1.0
-  moor_generator: ^1.4.0
+  moor_generator: ^3.1.0
   build_runner:
 
 
