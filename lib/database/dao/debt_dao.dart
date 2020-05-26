@@ -1,5 +1,6 @@
-import 'package:debt_collector_3/database/moor_database/moor_database.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
+
+import '../moor_database/moor_database.dart';
 
 part 'debt_dao.g.dart';
 
@@ -20,5 +21,6 @@ class DebtDao extends DatabaseAccessor<AppDatabase> with _$DebtDaoMixin {
   Future updateDebt(Debt debt) => update(debts).replace(debt);
   Future deleteDebt(Debt debt) => delete(debts).delete(debt);
   Future deleteAllDebts() => delete(debts).go();
-  deleteCompletedDebts()  => delete(debts)..where((debt) => debt.completed);
+  Future deleteCompletedDebts() async =>
+      (delete(debts)..where((t) => t.completed)).go();
 }

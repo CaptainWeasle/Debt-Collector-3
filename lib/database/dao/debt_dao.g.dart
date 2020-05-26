@@ -7,5 +7,5 @@ part of 'debt_dao.dart';
 // **************************************************************************
 
 mixin _$DebtDaoMixin on DatabaseAccessor<AppDatabase> {
-  $DebtsTable get debts => db.debts;
+  $DebtsTable get debts => attachedDatabase.debts;
 }

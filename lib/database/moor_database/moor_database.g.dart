@@ -6,7 +6,7 @@ part of 'moor_database.dart';
 // MoorGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Debt extends DataClass implements Insertable<Debt> {
   final int id;
   final String name;
@@ -52,38 +52,40 @@ class Debt extends DataClass implements Insertable<Debt> {
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}completed']),
     );
   }
-  factory Debt.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return Debt(
-      id: serializer.fromJson<int>(json['id']),
-      name: serializer.fromJson<String>(json['name']),
-      debt: serializer.fromJson<double>(json['debt']),
-      description: serializer.fromJson<String>(json['description']),
-      debtStartDate: serializer.fromJson<DateTime>(json['debtStartDate']),
-      debtDueDate: serializer.fromJson<DateTime>(json['debtDueDate']),
-      priority: serializer.fromJson<int>(json['priority']),
-      iOwe: serializer.fromJson<bool>(json['iOwe']),
-      completed: serializer.fromJson<bool>(json['completed']),
-    );
-  }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return {
-      'id': serializer.toJson<int>(id),
-      'name': serializer.toJson<String>(name),
-      'debt': serializer.toJson<double>(debt),
-      'description': serializer.toJson<String>(description),
-      'debtStartDate': serializer.toJson<DateTime>(debtStartDate),
-      'debtDueDate': serializer.toJson<DateTime>(debtDueDate),
-      'priority': serializer.toJson<int>(priority),
-      'iOwe': serializer.toJson<bool>(iOwe),
-      'completed': serializer.toJson<bool>(completed),
-    };
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || debt != null) {
+      map['debt'] = Variable<double>(debt);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || debtStartDate != null) {
+      map['debt_start_date'] = Variable<DateTime>(debtStartDate);
+    }
+    if (!nullToAbsent || debtDueDate != null) {
+      map['debt_due_date'] = Variable<DateTime>(debtDueDate);
+    }
+    if (!nullToAbsent || priority != null) {
+      map['priority'] = Variable<int>(priority);
+    }
+    if (!nullToAbsent || iOwe != null) {
+      map['i_owe'] = Variable<bool>(iOwe);
+    }
+    if (!nullToAbsent || completed != null) {
+      map['completed'] = Variable<bool>(completed);
+    }
+    return map;
   }
 
-  @override
-  T createCompanion<T extends UpdateCompanion<Debt>>(bool nullToAbsent) {
+  DebtsCompanion toCompanion(bool nullToAbsent) {
     return DebtsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
@@ -104,7 +106,38 @@ class Debt extends DataClass implements Insertable<Debt> {
       completed: completed == null && nullToAbsent
           ? const Value.absent()
           : Value(completed),
-    ) as T;
+    );
+  }
+
+  factory Debt.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Debt(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      debt: serializer.fromJson<double>(json['debt']),
+      description: serializer.fromJson<String>(json['description']),
+      debtStartDate: serializer.fromJson<DateTime>(json['debtStartDate']),
+      debtDueDate: serializer.fromJson<DateTime>(json['debtDueDate']),
+      priority: serializer.fromJson<int>(json['priority']),
+      iOwe: serializer.fromJson<bool>(json['iOwe']),
+      completed: serializer.fromJson<bool>(json['completed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'debt': serializer.toJson<double>(debt),
+      'description': serializer.toJson<String>(description),
+      'debtStartDate': serializer.toJson<DateTime>(debtStartDate),
+      'debtDueDate': serializer.toJson<DateTime>(debtDueDate),
+      'priority': serializer.toJson<int>(priority),
+      'iOwe': serializer.toJson<bool>(iOwe),
+      'completed': serializer.toJson<bool>(completed),
+    };
   }
 
   Debt copyWith(
@@ -160,18 +193,18 @@ class Debt extends DataClass implements Insertable<Debt> {
                           $mrjc(priority.hashCode,
                               $mrjc(iOwe.hashCode, completed.hashCode)))))))));
   @override
-  bool operator ==(other) =>
+  bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Debt &&
-          other.id == id &&
-          other.name == name &&
-          other.debt == debt &&
-          other.description == description &&
-          other.debtStartDate == debtStartDate &&
-          other.debtDueDate == debtDueDate &&
-          other.priority == priority &&
-          other.iOwe == iOwe &&
-          other.completed == completed);
+          other.id == this.id &&
+          other.name == this.name &&
+          other.debt == this.debt &&
+          other.description == this.description &&
+          other.debtStartDate == this.debtStartDate &&
+          other.debtDueDate == this.debtDueDate &&
+          other.priority == this.priority &&
+          other.iOwe == this.iOwe &&
+          other.completed == this.completed);
 }
 
 class DebtsCompanion extends UpdateCompanion<Debt> {
@@ -195,6 +228,46 @@ class DebtsCompanion extends UpdateCompanion<Debt> {
     this.iOwe = const Value.absent(),
     this.completed = const Value.absent(),
   });
+  DebtsCompanion.insert({
+    this.id = const Value.absent(),
+    @required String name,
+    @required double debt,
+    @required String description,
+    @required DateTime debtStartDate,
+    this.debtDueDate = const Value.absent(),
+    @required int priority,
+    @required bool iOwe,
+    this.completed = const Value.absent(),
+  })  : name = Value(name),
+        debt = Value(debt),
+        description = Value(description),
+        debtStartDate = Value(debtStartDate),
+        priority = Value(priority),
+        iOwe = Value(iOwe);
+  static Insertable<Debt> custom({
+    Expression<int> id,
+    Expression<String> name,
+    Expression<double> debt,
+    Expression<String> description,
+    Expression<DateTime> debtStartDate,
+    Expression<DateTime> debtDueDate,
+    Expression<int> priority,
+    Expression<bool> iOwe,
+    Expression<bool> completed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (debt != null) 'debt': debt,
+      if (description != null) 'description': description,
+      if (debtStartDate != null) 'debt_start_date': debtStartDate,
+      if (debtDueDate != null) 'debt_due_date': debtDueDate,
+      if (priority != null) 'priority': priority,
+      if (iOwe != null) 'i_owe': iOwe,
+      if (completed != null) 'completed': completed,
+    });
+  }
+
   DebtsCompanion copyWith(
       {Value<int> id,
       Value<String> name,
@@ -216,6 +289,39 @@ class DebtsCompanion extends UpdateCompanion<Debt> {
       iOwe: iOwe ?? this.iOwe,
       completed: completed ?? this.completed,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (debt.present) {
+      map['debt'] = Variable<double>(debt.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (debtStartDate.present) {
+      map['debt_start_date'] = Variable<DateTime>(debtStartDate.value);
+    }
+    if (debtDueDate.present) {
+      map['debt_due_date'] = Variable<DateTime>(debtDueDate.value);
+    }
+    if (priority.present) {
+      map['priority'] = Variable<int>(priority.value);
+    }
+    if (iOwe.present) {
+      map['i_owe'] = Variable<bool>(iOwe.value);
+    }
+    if (completed.present) {
+      map['completed'] = Variable<bool>(completed.value);
+    }
+    return map;
   }
 }
 
@@ -344,63 +450,62 @@ class $DebtsTable extends Debts with TableInfo<$DebtsTable, Debt> {
   @override
   final String actualTableName = 'debts';
   @override
-  VerificationContext validateIntegrity(DebtsCompanion d,
+  VerificationContext validateIntegrity(Insertable<Debt> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    } else if (id.isRequired && isInserting) {
-      context.missing(_idMeta);
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.name.present) {
+    if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
-    } else if (name.isRequired && isInserting) {
+          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+    } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (d.debt.present) {
+    if (data.containsKey('debt')) {
       context.handle(
-          _debtMeta, debt.isAcceptableValue(d.debt.value, _debtMeta));
-    } else if (debt.isRequired && isInserting) {
+          _debtMeta, debt.isAcceptableOrUnknown(data['debt'], _debtMeta));
+    } else if (isInserting) {
       context.missing(_debtMeta);
     }
-    if (d.description.present) {
-      context.handle(_descriptionMeta,
-          description.isAcceptableValue(d.description.value, _descriptionMeta));
-    } else if (description.isRequired && isInserting) {
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description'], _descriptionMeta));
+    } else if (isInserting) {
       context.missing(_descriptionMeta);
     }
-    if (d.debtStartDate.present) {
+    if (data.containsKey('debt_start_date')) {
       context.handle(
           _debtStartDateMeta,
-          debtStartDate.isAcceptableValue(
-              d.debtStartDate.value, _debtStartDateMeta));
-    } else if (debtStartDate.isRequired && isInserting) {
+          debtStartDate.isAcceptableOrUnknown(
+              data['debt_start_date'], _debtStartDateMeta));
+    } else if (isInserting) {
       context.missing(_debtStartDateMeta);
     }
-    if (d.debtDueDate.present) {
-      context.handle(_debtDueDateMeta,
-          debtDueDate.isAcceptableValue(d.debtDueDate.value, _debtDueDateMeta));
-    } else if (debtDueDate.isRequired && isInserting) {
-      context.missing(_debtDueDateMeta);
+    if (data.containsKey('debt_due_date')) {
+      context.handle(
+          _debtDueDateMeta,
+          debtDueDate.isAcceptableOrUnknown(
+              data['debt_due_date'], _debtDueDateMeta));
     }
-    if (d.priority.present) {
+    if (data.containsKey('priority')) {
       context.handle(_priorityMeta,
-          priority.isAcceptableValue(d.priority.value, _priorityMeta));
-    } else if (priority.isRequired && isInserting) {
+          priority.isAcceptableOrUnknown(data['priority'], _priorityMeta));
+    } else if (isInserting) {
       context.missing(_priorityMeta);
     }
-    if (d.iOwe.present) {
+    if (data.containsKey('i_owe')) {
       context.handle(
-          _iOweMeta, iOwe.isAcceptableValue(d.iOwe.value, _iOweMeta));
-    } else if (iOwe.isRequired && isInserting) {
+          _iOweMeta, iOwe.isAcceptableOrUnknown(data['i_owe'], _iOweMeta));
+    } else if (isInserting) {
       context.missing(_iOweMeta);
     }
-    if (d.completed.present) {
+    if (data.containsKey('completed')) {
       context.handle(_completedMeta,
-          completed.isAcceptableValue(d.completed.value, _completedMeta));
-    } else if (completed.isRequired && isInserting) {
-      context.missing(_completedMeta);
+          completed.isAcceptableOrUnknown(data['completed'], _completedMeta));
     }
     return context;
   }
@@ -414,52 +519,19 @@ class $DebtsTable extends Debts with TableInfo<$DebtsTable, Debt> {
   }
 
   @override
-  Map<String, Variable> entityToSql(DebtsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.name.present) {
-      map['name'] = Variable<String, StringType>(d.name.value);
-    }
-    if (d.debt.present) {
-      map['debt'] = Variable<double, RealType>(d.debt.value);
-    }
-    if (d.description.present) {
-      map['description'] = Variable<String, StringType>(d.description.value);
-    }
-    if (d.debtStartDate.present) {
-      map['debt_start_date'] =
-          Variable<DateTime, DateTimeType>(d.debtStartDate.value);
-    }
-    if (d.debtDueDate.present) {
-      map['debt_due_date'] =
-          Variable<DateTime, DateTimeType>(d.debtDueDate.value);
-    }
-    if (d.priority.present) {
-      map['priority'] = Variable<int, IntType>(d.priority.value);
-    }
-    if (d.iOwe.present) {
-      map['i_owe'] = Variable<bool, BoolType>(d.iOwe.value);
-    }
-    if (d.completed.present) {
-      map['completed'] = Variable<bool, BoolType>(d.completed.value);
-    }
-    return map;
-  }
-
-  @override
   $DebtsTable createAlias(String alias) {
     return $DebtsTable(_db, alias);
   }
 }
 
 abstract class _$AppDatabase extends GeneratedDatabase {
-  _$AppDatabase(QueryExecutor e) : super(const SqlTypeSystem.withDefaults(), e);
+  _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $DebtsTable _debts;
   $DebtsTable get debts => _debts ??= $DebtsTable(this);
   DebtDao _debtDao;
   DebtDao get debtDao => _debtDao ??= DebtDao(this as AppDatabase);
   @override
-  List<TableInfo> get allTables => [debts];
+  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [debts];
 }

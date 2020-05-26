@@ -1,6 +1,11 @@
-import 'package:debt_collector_3/database/dao/debt_dao.dart';
-import 'package:flutter/semantics.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'dart:io';
+
+import 'package:moor/moor.dart';
+import 'package:moor_ffi/moor_ffi.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+
+import '../dao/debt_dao.dart';
 
 part 'moor_database.g.dart';
 
@@ -17,11 +22,20 @@ class Debts extends Table {
   BoolColumn get completed => boolean().withDefault(Constant(false))();
 }
 
+LazyDatabase _openConnection() {
+  // the LazyDatabase util lets us find the right location for the file async.
+  return LazyDatabase(() async {
+    // put the database file, called db.sqlite here, into the documents folder
+    // for your app.
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    return VmDatabase(file);
+  });
+}
+
 @UseMoor(tables: [Debts], daos: [DebtDao])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase()
-      : super(FlutterQueryExecutor.inDatabaseFolder(
-            path: 'db.sqlite', logStatements: true));
+  AppDatabase() : super(_openConnection());
 
   @override
   get schemaVersion => 1;
