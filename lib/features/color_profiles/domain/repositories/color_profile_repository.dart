@@ -1,4 +1,4 @@
-import 'package:debt_collector_3/features/color_profiles/domain/entities/color_profile.dart';
+import '../entities/color_profile.dart';
 
 abstract class ColorProfileRepository {
   Future<List<ColorProfile>> getAllColorProfiles();

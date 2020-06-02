@@ -1,6 +1,6 @@
-import 'package:debt_collector_3/features/debts/domain/entities/debt.dart';
-import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+
+import '../../domain/entities/debt.dart';
 
 class DebtModel extends Debt {
   DebtModel({

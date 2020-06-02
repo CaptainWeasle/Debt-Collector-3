@@ -16,7 +16,6 @@ class ColorProfile extends Equatable {
 
   final int buttonColor;
   final int cardColor;
-  final int appBarTheme;
   final int dialogBackgroundColor;
   final int cursorColor1;
   final int cursorColor2;
@@ -53,7 +52,6 @@ class ColorProfile extends Equatable {
     this.splashColor,
     this.buttonColor,
     this.cardColor,
-    this.appBarTheme,
     this.dialogBackgroundColor,
     this.cursorColor1,
     this.cursorColor2,
@@ -89,7 +87,6 @@ class ColorProfile extends Equatable {
         splashColor,
         buttonColor,
         cardColor,
-        appBarTheme,
         dialogBackgroundColor,
         cursorColor1,
         cursorColor2,

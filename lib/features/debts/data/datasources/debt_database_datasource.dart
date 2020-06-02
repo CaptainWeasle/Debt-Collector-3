@@ -1,7 +1,7 @@
+import 'package:debt_collector_3/database/dao/debt_feature/debt_dao.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/conversions/database_debtmodel_converter.dart';
-import '../../../../database/dao/debt_dao.dart';
 import '../models/debt_model.dart';
 
 abstract class DebtDatabaseDataSource {

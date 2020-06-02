@@ -1,4 +1,3 @@
-import 'package:debt_collector_3/database/dao/debt_dao.dart';
 import 'package:debt_collector_3/database/moor_database/moor_database.dart';
 import 'package:debt_collector_3/features/debts/data/datasources/debt_database_datasource.dart';
 import 'package:debt_collector_3/features/debts/data/repositories/debt_repository_impl.dart';
@@ -17,6 +16,8 @@ import 'package:debt_collector_3/features/debts/domain/usecases/get_all_debts.da
 import 'package:debt_collector_3/features/debts/domain/usecases/update_debt.dart'
     as prefix1;
 import 'package:get_it/get_it.dart';
+
+import 'database/dao/debt_feature/debt_dao.dart';
 
 // sl steht für service locator
 final sl = GetIt.instance;
