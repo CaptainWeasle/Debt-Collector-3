@@ -1,3 +1,4 @@
+import 'package:debt_collector_3/core/conversions/database_color_profile_model_converter.dart';
 import 'package:debt_collector_3/database/dao/color_profile_feature/color_profile_dao.dart';
 import 'package:debt_collector_3/features/color_profiles/data/models/color_profile_model.dart';
 
@@ -17,31 +18,27 @@ class ColorProfileDatasourceImpl extends ColorProfileDatasource {
   });
 
   @override
-  Future addColorProfile(ColorProfileModel colorProfileModel) async{
-    return null;
+  Future addColorProfile(ColorProfileModel colorProfileModel) async {
+    return dao.addColorProfile(toDatabaseColorProfile(colorProfileModel));
   }
 
   @override
   Future deleteAllColorProfiles() {
-    // TODO: implement deleteAllColorProfiles
-    return null;
+    return dao.deleteAllColorProfiles();
   }
 
   @override
   Future deleteColorProfile(ColorProfileModel colorProfileModel) {
-    // TODO: implement deleteColorProfile
-    return null;
+    return dao.deleteColorProfile(toDatabaseColorProfile(colorProfileModel));
   }
 
   @override
-  Future<List<ColorProfileModel>> getAllColorProfiles() {
-    // TODO: implement getAllColorProfiles
-    return null;
+  Future<List<ColorProfileModel>> getAllColorProfiles() async {
+    return toColorProfileModelList(await dao.getAllColorProfiles());
   }
 
   @override
   Future updateColorProfile(ColorProfileModel colorProfileModel) {
-    // TODO: implement updateColorProfile
-    return null;
+    return dao.updateColorProfile(toDatabaseColorProfile(colorProfileModel));
   }
 }
