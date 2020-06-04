@@ -1,34 +1,36 @@
+import 'package:debt_collector_3/features/color_profiles/data/datasources/color_profile_datasource.dart';
 import 'package:debt_collector_3/features/color_profiles/domain/entities/color_profile.dart';
 import 'package:debt_collector_3/features/color_profiles/domain/repositories/color_profile_repository.dart';
 
 class ColorProfileRepositoryImpl extends ColorProfileRepository {
+  final ColorProfileDatasource databaseDatasource;
+
+  ColorProfileRepositoryImpl({
+    this.databaseDatasource,
+  });
+
   @override
   Future addColorProfile(ColorProfile colorProfile) {
-    // TODO: implement addColorProfile
-    return null;
+    return databaseDatasource.addColorProfile(colorProfile);
   }
 
   @override
   Future deleteAllColorProfiles() {
-    // TODO: implement deleteAllColorProfiles
-    return null;
+    return databaseDatasource.deleteAllColorProfiles();
   }
 
   @override
   Future deleteColorProfile(ColorProfile colorProfile) {
-    // TODO: implement deleteColorProfile
-    return null;
+    return databaseDatasource.deleteColorProfile(colorProfile);
   }
 
   @override
   Future<List<ColorProfile>> getAllColorProfiles() {
-    // TODO: implement getAllColorProfiles
-    return null;
+    return databaseDatasource.getAllColorProfiles();
   }
 
   @override
   Future updateColorProfile(ColorProfile colorProfile) {
-    // TODO: implement updateColorProfile
-    return null;
+    return databaseDatasource.updateColorProfile(colorProfile);
   }
 }
