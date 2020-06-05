@@ -1,14 +1,14 @@
 import 'dart:ffi';
 
 import 'package:dartz/dartz.dart';
-import 'package:debt_collector_3/core/conversions/database_debtmodel_converter.dart';
-import 'package:debt_collector_3/features/debts/data/datasources/debt_database_datasource.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../core/conversions/debt_conversions/database_debtmodel_converter.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/debt.dart';
 import '../../domain/repositories/debt_repository.dart';
+import '../datasources/debt_database_datasource.dart';
 
 class DebtRepositoryImpl implements DebtRepository {
   final DebtDatabaseDataSource databaseDatasource;

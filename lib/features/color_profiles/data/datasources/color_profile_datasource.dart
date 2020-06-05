@@ -1,6 +1,6 @@
-import 'package:debt_collector_3/core/conversions/database_color_profile_model_converter.dart';
-import 'package:debt_collector_3/database/dao/color_profile_feature/color_profile_dao.dart';
-import 'package:debt_collector_3/features/color_profiles/data/models/color_profile_model.dart';
+import '../../../../core/conversions/color_profile_conversions.dart/database_color_profile_model_converter.dart';
+import '../../../../database/dao/color_profile_feature/color_profile_dao.dart';
+import '../models/color_profile_model.dart';
 
 abstract class ColorProfileDatasource {
   Future<List<ColorProfileModel>> getAllColorProfiles();

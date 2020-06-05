@@ -1,6 +1,4 @@
-import 'package:debt_collector_3/core/conversions/database_debtmodel_converter.dart';
-import 'package:debt_collector_3/database/moor_database/moor_database.dart';
-import 'package:debt_collector_3/features/debts/data/models/debt_model.dart';
+import 'package:debt_collector_3/core/conversions/debt_conversions/database_debtmodel_converter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:debt_collector_3/core/globals/test_debts.dart' as testDebts;
 
