@@ -1,3 +1,4 @@
+import 'package:debt_collector_3/features/drawer_navigation.dart/presentation/pages/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +14,7 @@ class DebtListPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Debt Collector 3"),
       ),
+      drawer: NavigationDrawer(),
       floatingActionButton: AddDebtFAB(),
       body: buildBody(context),
     );
