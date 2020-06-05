@@ -18,25 +18,25 @@ class ColorProfile extends Equatable {
   final int cardColor;
   final int dialogBackgroundColor;
   final int cursorColor1;
-  final int cursorColor2;
-  final int cursorColor3;
+  final int cursorColor2; //! nicht genutzt
+  final int cursorColor3;//! nicht genutzt
   final int disabledColor;
 
   final double fontSizeHeadline;
   final double fontSizeTitle;
   final double fontSizeBody1;
   final double fontSizeBody2;
-  final double fontSizeBody3;
+  final double fontSizeBody3; //! nicht genutzt
 
   final int fontColorHeadline;
   final int fontColorTitle;
   final int fontColor1;
   final int fontColor2;
-  final int fontColor3;
+  final int fontColor3; //! nicht genutzt
 
   final String fontFamily1;
-  final String fontFamily2;
-  final String fontFamily3;
+  final String fontFamily2; //? andersweitig genutzt
+  final String fontFamily3;//? andersweitig genutzt
 
   ColorProfile({
     this.id,
